@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Plataformas",
+    "board_label": "",
+    "enabled": true,
+    "challenge": "platformers"
+  },
+  {
+    "id": 2,
+    "name": "Combate",
+    "board_label": "",
+    "enabled": true,
+    "challenge": "fighting"
+  },
+  {
+    "id": 3,
+    "name": "Corridas",
+    "board_label": "",
+    "enabled": true,
+    "challenge": "racing"
+  },
+  {
+    "id": 4,
+    "name": "Jogo livre",
+    "board_label": "",
+    "enabled": true,
+    "challenge": null
+  },
+  {
+    "id": 5,
+    "name": "Jogo livre",
+    "board_label": "",
+    "enabled": true,
+    "challenge": null
+  }
+]

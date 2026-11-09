@@ -1,0 +1,6 @@
+{
+  "validated": false,
+  "players_tested": 0,
+  "source": "controllers/es_input.cfg",
+  "notes": "Só ativar após testar dois comandos físicos. Uma entrada por GUID pode servir comandos idênticos; a ordem das portas é atribuída pelo Batocera."
+}

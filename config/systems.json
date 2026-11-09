@@ -1,0 +1,34 @@
+{
+  "nes": [
+    ".nes",
+    ".zip",
+    ".7z"
+  ],
+  "snes": [
+    ".sfc",
+    ".smc",
+    ".zip",
+    ".7z"
+  ],
+  "megadrive": [
+    ".md",
+    ".bin",
+    ".gen",
+    ".zip",
+    ".7z"
+  ],
+  "gb": [
+    ".gb",
+    ".zip",
+    ".7z"
+  ],
+  "arcade": [
+    ".zip"
+  ],
+  "psx": [
+    ".cue",
+    ".chd",
+    ".pbp",
+    ".m3u"
+  ]
+}

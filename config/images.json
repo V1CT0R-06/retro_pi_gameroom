@@ -1,0 +1,9 @@
+{
+  "version": "43.1",
+  "architecture": "bcm2837",
+  "url": "https://updates.batocera.org/bcm2837/stable/last/batocera-bcm2837-43.1-20260530.img.gz",
+  "checksum_url": "https://mirrors.o2switch.fr/batocera/bcm2837/stable/last/batocera-bcm2837-43.1-20260530.img.gz.md5",
+  "source": "https://batocera.org/download_table",
+  "checked": "2026-11-09",
+  "model": "Raspberry Pi 3 Model B+"
+}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Apagar participante</h1>
+<p>Vais apagar <strong>{{ person.nickname }} (#{{ person.id }})</strong> e as suas <strong>{{ count }} tentativas</strong>, incluindo resultados nas classificações.</p>
+<p>Esta operação não pode ser desfeita pela interface. O motivo e a identificação anterior ficam na auditoria. Tentativas a decorrer ou paradas por confirmar têm de ser resolvidas primeiro.</p>
+<form method="post">
+ <input type="hidden" name="csrf" value="{{ csrf }}">
+ <input type="hidden" name="nickname" value="{{ person.nickname }}">
+ <label>Motivo<input name="reason" required maxlength="300" autocomplete="off"></label>
+ <label>Escreve APAGAR {{ person.id }} para confirmar<input name="confirmation" required autocomplete="off" spellcheck="false"></label>
+ <button class="danger">Apagar definitivamente {{ person.nickname }} (#{{ person.id }})</button>
+ <a class="button secondary" href="/admin">Cancelar</a>
+</form>
+{% endblock %}

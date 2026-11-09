@@ -1,0 +1,402 @@
+[
+  {
+    "title": "Super Mario Bros.",
+    "system": "nes",
+    "aliases": [
+      "Super Mario Bros."
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Super Mario Bros. 3",
+    "system": "nes",
+    "aliases": [
+      "Super Mario Bros. 3"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Super Mario World",
+    "system": "snes",
+    "aliases": [
+      "Super Mario World"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": true
+  },
+  {
+    "title": "Donkey Kong Country",
+    "system": "snes",
+    "aliases": [
+      "Donkey Kong Country"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Sonic the Hedgehog",
+    "system": "megadrive",
+    "aliases": [
+      "Sonic the Hedgehog"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Sonic the Hedgehog 2",
+    "system": "megadrive",
+    "aliases": [
+      "Sonic the Hedgehog 2"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Mega Man X",
+    "system": "snes",
+    "aliases": [
+      "Mega Man X"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Street Fighter II",
+    "system": "snes",
+    "aliases": [
+      "Street Fighter II",
+      "Street Fighter II - The World Warrior",
+      "Street Fighter II - World Warrior"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": true
+  },
+  {
+    "title": "Street Fighter II Turbo",
+    "system": "snes",
+    "aliases": [
+      "Street Fighter II Turbo"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": false
+  },
+  {
+    "title": "Mortal Kombat II",
+    "system": "snes",
+    "aliases": [
+      "Mortal Kombat II"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": false
+  },
+  {
+    "title": "Fatal Fury Special",
+    "system": "snes",
+    "aliases": [
+      "Fatal Fury Special"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": false
+  },
+  {
+    "title": "Samurai Shodown",
+    "system": "megadrive",
+    "aliases": [
+      "Samurai Shodown"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": false
+  },
+  {
+    "title": "Teenage Mutant Ninja Turtles - Tournament Fighters",
+    "system": "snes",
+    "aliases": [
+      "Teenage Mutant Ninja Turtles - Tournament Fighters",
+      "Teenage Mutant Ninja Turtles Tournament Fighters"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": false
+  },
+  {
+    "title": "Super Mario Kart",
+    "system": "snes",
+    "aliases": [
+      "Super Mario Kart"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": true
+  },
+  {
+    "title": "F-Zero",
+    "system": "snes",
+    "aliases": [
+      "F-Zero"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Micro Machines 2",
+    "system": "megadrive",
+    "aliases": [
+      "Micro Machines 2",
+      "Micro Machines 2 - Turbo Tournament"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": false
+  },
+  {
+    "title": "Road Rash II",
+    "system": "megadrive",
+    "aliases": [
+      "Road Rash II"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "OutRun",
+    "system": "megadrive",
+    "aliases": [
+      "OutRun"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Top Gear",
+    "system": "snes",
+    "aliases": [
+      "Top Gear"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Tetris",
+    "system": "gb",
+    "aliases": [
+      "Tetris"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Dr. Mario",
+    "system": "nes",
+    "aliases": [
+      "Dr. Mario"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Pac-Man",
+    "system": "nes",
+    "aliases": [
+      "Pac-Man"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Space Invaders",
+    "system": "gb",
+    "aliases": [
+      "Space Invaders"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Galaga",
+    "system": "nes",
+    "aliases": [
+      "Galaga"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Bubble Bobble",
+    "system": "nes",
+    "aliases": [
+      "Bubble Bobble"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Puzzle Bobble",
+    "system": "arcade",
+    "aliases": [
+      "Puzzle Bobble"
+    ],
+    "files": [],
+    "optional": true,
+    "selected": false
+  },
+  {
+    "title": "Crash Bandicoot",
+    "system": "psx",
+    "aliases": [
+      "Crash Bandicoot"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Crash Bandicoot 2",
+    "system": "psx",
+    "aliases": [
+      "Crash Bandicoot 2",
+      "Crash Bandicoot 2 - Cortex Strikes Back"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Tekken 3",
+    "system": "psx",
+    "aliases": [
+      "Tekken 3"
+    ],
+    "files": [],
+    "optional": false,
+    "multiplayer": "2 jogadores locais; validar modos e comandos na edição fornecida",
+    "selected": false
+  },
+  {
+    "title": "Ridge Racer",
+    "system": "psx",
+    "aliases": [
+      "Ridge Racer"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Wipeout",
+    "system": "psx",
+    "aliases": [
+      "Wipeout"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Tony Hawk's Pro Skater",
+    "system": "psx",
+    "aliases": [
+      "Tony Hawk's Pro Skater"
+    ],
+    "files": [],
+    "optional": false,
+    "selected": false
+  },
+  {
+    "title": "Teenage Mutant Ninja Turtles IV - Turtles in Time",
+    "system": "snes",
+    "aliases": [
+      "Teenage Mutant Ninja Turtles IV - Turtles in Time"
+    ],
+    "files": [],
+    "optional": true,
+    "multiplayer": "cooperativo simultâneo",
+    "selected": false
+  },
+  {
+    "title": "Teenage Mutant Ninja Turtles - The Hyperstone Heist",
+    "system": "megadrive",
+    "aliases": [
+      "Teenage Mutant Ninja Turtles - The Hyperstone Heist"
+    ],
+    "files": [],
+    "optional": true,
+    "multiplayer": "cooperativo simultâneo",
+    "selected": false
+  },
+  {
+    "title": "Streets of Rage 2",
+    "system": "megadrive",
+    "aliases": [
+      "Streets of Rage 2"
+    ],
+    "files": [],
+    "optional": true,
+    "multiplayer": "cooperativo simultâneo",
+    "selected": false
+  },
+  {
+    "title": "Contra III - The Alien Wars",
+    "system": "snes",
+    "aliases": [
+      "Contra III - The Alien Wars"
+    ],
+    "files": [],
+    "optional": true,
+    "multiplayer": "cooperativo simultâneo",
+    "selected": false
+  },
+  {
+    "title": "Super Bomberman 2",
+    "system": "snes",
+    "aliases": [
+      "Super Bomberman 2"
+    ],
+    "files": [],
+    "optional": true,
+    "multiplayer": "competitivo simultâneo",
+    "selected": false
+  },
+  {
+    "title": "NBA Jam - Tournament Edition",
+    "system": "megadrive",
+    "aliases": [
+      "NBA Jam - Tournament Edition"
+    ],
+    "files": [],
+    "optional": true,
+    "multiplayer": "competitivo/cooperativo simultâneo",
+    "selected": false
+  }
+]

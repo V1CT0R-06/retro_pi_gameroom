@@ -1,0 +1,26 @@
+[
+  {
+    "id": "platformers",
+    "station": 1,
+    "name": "Plataformas",
+    "game": "Super Mario World",
+    "mode": "stopwatch",
+    "rules": "Yoshi’s Island 1; Mario pequeno, sem itens, sem Yoshi; início ao primeiro movimento após entrada no nível; fim ao tocar na fita da meta. Morte ou abandono = falha."
+  },
+  {
+    "id": "fighting",
+    "station": 2,
+    "name": "Combate",
+    "game": "Street Fighter II",
+    "mode": "stopwatch",
+    "rules": "SNES Street Fighter II: The World Warrior (USA); Ryu contra CPU Dhalsim; dificuldade 1 estrela; velocidade original; melhor de três rounds. Antes de iniciar, confirmar Dhalsim como primeiro adversário; se for outro, reiniciar e repetir a seleção, sem consumir tentativa oficial. Início em FIGHT do primeiro round; fim no KO do round vencedor. Perder o combate ou abandonar = falha. Mesma ROM e core durante todo o evento."
+  },
+  {
+    "id": "racing",
+    "station": 3,
+    "name": "Corridas",
+    "game": "Super Mario Kart",
+    "mode": "manual",
+    "rules": "SNES USA; Time Trial (classe fixa do modo, sem escolha de cc); Mario; Mushroom Cup, Mario Circuit 1; tempo total de 5 voltas. Sem ghost de terceiros, atalhos com glitches ou save states."
+  }
+]

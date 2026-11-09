@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Não foi possível concluir</h1>
+<p role="alert">{{ message }}</p>
+{% if session.role == 'admin' %}<a class="button secondary" href="/admin">Voltar à administração</a>{% else %}<a class="button secondary" href="/">Voltar ao início</a>{% endif %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Administração</h1>
+<p>Corrigir exige motivo e deixa registo. Anular liberta uma tentativa; falha continua a contar.</p>
+<p>Exportar:
+ {% for k in ['participants','attempts','leaderboards','audit'] %}
+ <a href="/admin/export/{{ k }}.csv">{{ k }} CSV</a>
+ {% endfor %}
+</p>
+<section>
+ <h2>Participantes</h2>
+ <div class="table-scroll">
+  <table>
+   <thead><tr><th>ID</th><th>Alcunha</th><th>Tentativas</th><th>Gestão</th></tr></thead>
+   <tbody>
+    {% for p in participants %}
+    <tr>
+     <td>#{{ p.id }}</td><td>{{ p.nickname }}</td><td>{{ p.attempts }}</td>
+     <td><a class="button danger" href="/admin/participants/{{ p.id }}/delete">Apagar participante</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">Sem participantes registados.</td></tr>
+    {% endfor %}
+   </tbody>
+  </table>
+ </div>
+</section>
+<section>
+ <h2>Repor dados antes do evento</h2>
+ <p>Apaga todos os participantes e tentativas. Mantém contas, definições, backups e auditoria. Não distingue automaticamente dados de teste de dados reais.</p>
+ <a class="button danger" href="/admin/reset">Repor todos os dados do torneio…</a>
+</section>
+<h2>Corrigir ou anular tentativas</h2>
+{% for a in attempts %}
+<details>
+ <summary>#{{ a.id }} · {{ a.nickname }} · {{ a.challenge_id }} · {{ a.number }}/3 · {{ a.status }} · {{ a.centiseconds|clock }}</summary>
+ <p>{{ a.created }} · {{ a.volunteer }} · {{ a.note }}</p>
+ {% if a.status!='void' %}
+ <form action="/admin/attempts/{{ a.id }}" method="post">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <label>Estado
+   <select name="status"><option value="valid">Válida</option><option value="failed">Falhada</option><option value="void">Anulada</option></select>
+  </label>
+  <label>Tempo corrigido<input name="time" placeholder="01:23.45" value="{{ a.centiseconds|clock if a.centiseconds else '' }}"></label>
+  <label>Motivo<input name="reason" required maxlength="300"></label>
+  <button>Aplicar correção</button>
+ </form>
+ {% endif %}
+</details>
+{% else %}
+<p>Sem tentativas registadas.</p>
+{% endfor %}
+<h2>Histórico recente</h2>
+{% for a in audit %}
+<details>
+ <summary>{{ a.created }} · {{ a.actor }} · {{ a.action }}{% if a.attempt_id %} · tentativa #{{ a.attempt_id }}{% endif %}</summary>
+ <pre>{{ a.before_json }}</pre><pre>{{ a.after_json }}</pre>
+</details>
+{% else %}
+<p>Sem alterações registadas.</p>
+{% endfor %}
+{% endblock %}

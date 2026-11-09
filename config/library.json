@@ -1,0 +1,4 @@
+{
+  "include_unlisted": false,
+  "notes": "Só entram jogos com selected=true no games.json. include_unlisted=true inclui também ficheiros que não correspondam a entradas do manifesto."
+}
