@@ -14,7 +14,7 @@ from functools import wraps
 from pathlib import Path
 from flask import Flask, abort, g, jsonify, redirect, render_template, request, session, url_for, Response
 from werkzeug.exceptions import HTTPException
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from .database import connect, initialize, backup, next_id
 
 ROOT=Path(__file__).resolve().parent.parent
@@ -69,8 +69,25 @@ def create_app(test_config=None):
  def context():
   if 'csrf' not in session: session['csrf']=secrets.token_hex(24)
   return dict(challenges=CHALLENGES,csrf=session['csrf'])
+ def shared_pin_enabled():
+  row=db().execute("SELECT value FROM app_settings WHERE key='shared_pin_enabled'").fetchone()
+  return row is None or row['value']=='1'
+ def shared_pin_version():
+  row=db().execute("SELECT value FROM app_settings WHERE key='shared_pin_version'").fetchone()
+  return row['value'] if row else '0'
+ def set_shared_pin(enabled):
+  before=shared_pin_enabled()
+  if before==enabled:return
+  db().execute("INSERT INTO app_settings(key,value) VALUES ('shared_pin_enabled',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",('1' if enabled else '0',))
+  db().execute("INSERT INTO app_settings(key,value) VALUES ('shared_pin_version','1') ON CONFLICT(key) DO UPDATE SET value=CAST(value AS INTEGER)+1")
+  db().execute('INSERT INTO audit(actor,action,before_json,after_json) VALUES (?,?,?,?)',(session['volunteer'],'shared_pin_changed',json.dumps(dict(enabled=before)),json.dumps(dict(enabled=enabled))))
  @app.before_request
  def protect():
+  # Individual accounts are rechecked on every request, so deletion revokes
+  # already-open sessions. Account IDs are never reused.
+  if session.get('account_id'):
+   if not db().execute('SELECT 1 FROM helpers WHERE id=?',(session['account_id'],)).fetchone():session.clear()
+  elif session.get('role')=='volunteer' and (not shared_pin_enabled() or session.get('shared_pin_version','0')!=shared_pin_version()):session.clear()
   if request.method=='POST' and not secrets.compare_digest(session.get('csrf','missing'),request.headers.get('X-CSRF-Token',request.form.get('csrf',''))):
    abort(400,description='Pedido expirado. Atualiza a página.')
  @app.after_request
@@ -135,14 +152,22 @@ def create_app(test_config=None):
    pin=request.form.get('pin','')
    role=None
    username=request.form.get('volunteer','').strip()[:60]
-   # Slow password hashes also make brute force deliberately expensive.
-   for name in ['admin','volunteer']:
-    if name=='admin' and app.config['ADMIN_USERNAME'] and username!=app.config['ADMIN_USERNAME']: continue
-    hashed=app.config.get(name.upper()+'_HASH')
-    env=os.environ.get('GLUA_'+name.upper()+'_PIN')
-    if (hashed and check_password_hash(hashed,pin)) or (env and secrets.compare_digest(env,pin)): role=name; break
+   method=None;helper=None
+   admin_hash=app.config['ADMIN_HASH'];admin_pin=os.environ.get('GLUA_ADMIN_PIN')
+   admin_name_matches=not app.config['ADMIN_USERNAME'] or username==app.config['ADMIN_USERNAME']
+   if admin_name_matches and ((admin_hash and check_password_hash(admin_hash,pin)) or (admin_pin and secrets.compare_digest(admin_pin,pin))):
+    role='admin';method='admin'
+   if role is None:
+    helper=db().execute('SELECT * FROM helpers WHERE username=?',(username.casefold(),)).fetchone()
+    if helper and check_password_hash(helper['password_hash'],pin):role='volunteer';method='helper'
+    elif helper is None and shared_pin_enabled():
+     hashed=app.config['VOLUNTEER_HASH'];env=os.environ.get('GLUA_VOLUNTEER_PIN')
+     if (hashed and check_password_hash(hashed,pin)) or (env and secrets.compare_digest(env,pin)):role='volunteer';method='shared_pin'
    if role:
-    session.clear(); session.update(role=role,volunteer=request.form.get('volunteer','').strip()[:60] or role,csrf=secrets.token_hex(24))
+    actor=f"{helper['display_name']} ({helper['username']})" if method=='helper' else username or role
+    session.clear();session.update(role=role,volunteer=actor,auth_method=method,csrf=secrets.token_hex(24))
+    if method=='helper':session['account_id']=helper['id']
+    elif method=='shared_pin':session['shared_pin_version']=shared_pin_version()
     return redirect(url_for('home'))
    error='Utilizador ou palavra-passe/PIN inválido.'
   return render_template('login.html',error=error)
@@ -236,6 +261,64 @@ def create_app(test_config=None):
  @authorized(admin=True)
  def admin():
   return render_template('admin.html',participants=db().execute('SELECT p.id,p.nickname,COUNT(a.id) AS attempts FROM participants p LEFT JOIN attempts a ON a.participant_id=p.id GROUP BY p.id ORDER BY p.id').fetchall(),attempts=db().execute('SELECT a.*,p.nickname FROM attempts a JOIN participants p ON p.id=a.participant_id ORDER BY a.id DESC LIMIT 200').fetchall(),audit=db().execute('SELECT * FROM audit ORDER BY id DESC LIMIT 50').fetchall())
+ @app.route('/admin/helpers',methods=['GET','POST'])
+ @authorized(admin=True)
+ def helpers():
+  if request.method=='GET':
+   rows=db().execute('SELECT id,username,display_name,created FROM helpers ORDER BY username').fetchall()
+   return render_template('helpers.html',helpers=rows,shared_pin=shared_pin_enabled())
+  values=data();username=values.get('username','');password=values.get('password','');display=values.get('display_name','')
+  if not all(isinstance(v,str) for v in (username,password,display)):return fail('Dados de conta inválidos.',400)
+  username=unicodedata.normalize('NFKC',username).strip().casefold()
+  display=' '.join(display.split()) or username
+  if not re.fullmatch(r'[a-z0-9][a-z0-9_.-]{1,39}',username):return fail('Utilizador: 2–40 letras sem acentos, números, ponto, hífen ou underscore.',400)
+  if username==(app.config['ADMIN_USERNAME'] or 'admin').casefold():return fail('Esse utilizador está reservado para a administração.',400)
+  if not 2<=len(display)<=60 or any(unicodedata.category(c).startswith('C') for c in display):return fail('Nome: 2–60 caracteres visíveis.',400)
+  if not 8<=len(password)<=128:return fail('A palavra-passe deve ter entre 8 e 128 caracteres.',400)
+  hashed=generate_password_hash(password)
+  connection=db()
+  try:
+   connection.execute('BEGIN IMMEDIATE')
+   result=connection.execute('INSERT INTO helpers(username,display_name,password_hash) VALUES (?,?,?)',(username,display,hashed))
+   details=dict(id=result.lastrowid,username=username,display_name=display)
+   connection.execute('INSERT INTO audit(actor,action,before_json,after_json) VALUES (?,?,?,?)',(session['volunteer'],'helper_created','{}',json.dumps(details,ensure_ascii=False)))
+   if values.get('disable_shared_pin') in ('on',True):set_shared_pin(False)
+   connection.commit()
+  except sqlite3.IntegrityError:
+   connection.rollback();return fail('Esse utilizador já existe. Escolhe outro nome.',409)
+  if request.is_json:return jsonify(**details),201
+  return redirect(url_for('helpers'))
+
+ @app.route('/admin/helpers/<int:uid>/delete',methods=['GET','POST'])
+ @authorized(admin=True)
+ def delete_helper(uid):
+  if request.method=='GET':
+   helper=db().execute('SELECT id,username,display_name FROM helpers WHERE id=?',(uid,)).fetchone()
+   if not helper:abort(404)
+   return render_template('confirm_helper_delete.html',helper=helper)
+  values=data();reason=values.get('reason','')
+  if not isinstance(reason,str) or not 1<=len(reason.strip())<=300:return fail('Indica um motivo (até 300 caracteres).',400)
+  connection=db();connection.execute('BEGIN IMMEDIATE')
+  helper=connection.execute('SELECT id,username,display_name FROM helpers WHERE id=?',(uid,)).fetchone()
+  if not helper:connection.rollback();abort(404)
+  if values.get('confirmation')!='APAGAR '+helper['username']:
+   connection.rollback();return fail('Escreve a confirmação exata do utilizador que vais apagar.',400)
+  connection.execute('DELETE FROM helpers WHERE id=?',(uid,))
+  connection.execute('INSERT INTO audit(actor,action,before_json,after_json) VALUES (?,?,?,?)',(session['volunteer'],'helper_deleted',json.dumps(dict(helper),ensure_ascii=False),json.dumps(dict(reason=reason.strip()),ensure_ascii=False)))
+  connection.commit()
+  if request.is_json:return jsonify(ok=True)
+  return redirect(url_for('helpers'))
+
+ @app.post('/admin/helpers/shared-pin')
+ @authorized(admin=True)
+ def shared_pin_setting():
+  enabled=data().get('enabled')
+  if enabled not in ('0','1'):return fail('Definição inválida.',400)
+  connection=db();connection.execute('BEGIN IMMEDIATE');set_shared_pin(enabled=='1')
+  connection.commit()
+  if request.is_json:return jsonify(ok=True)
+  return redirect(url_for('helpers'))
+
  def reset_snapshot():
   records={table:[dict(r) for r in db().execute(f'SELECT * FROM {table} ORDER BY id')] for table in ('participants','attempts')}
   return hashlib.sha256(json.dumps(records,sort_keys=True).encode()).hexdigest()

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Contas dos voluntários</h1>
+<p>Estas contas podem registar participantes e tentativas. Só o administrador pode gerir contas, corrigir resultados ou apagar dados. A tua conta de administrador é gerida à parte e não pode ser apagada aqui.</p>
+<p><a href="/admin">Voltar à administração</a></p>
+<section>
+ <h2>Criar conta</h2>
+ <form method="post">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <label>Utilizador<input name="username" minlength="2" maxlength="40" required autocomplete="off" placeholder="ex.: ana.silva"></label>
+  <label>Nome apresentado<input name="display_name" maxlength="60" placeholder="ex.: Ana Silva"></label>
+  <label>Palavra-passe inicial (8–128 caracteres)<input name="password" type="password" minlength="8" maxlength="128" required autocomplete="new-password"></label>
+  <label>PIN partilhado depois de criar esta conta
+   <select name="disable_shared_pin">
+    <option value="on">Desativar o PIN partilhado (recomendado)</option>
+    <option value="off">Manter a definição atual do PIN partilhado</option>
+   </select>
+  </label>
+  <button>Criar conta de voluntário</button>
+ </form>
+ <p>Comunica o utilizador e a palavra-passe diretamente à pessoa. A palavra-passe fica guardada apenas como hash e não pode ser consultada depois.</p>
+</section>
+<section>
+ <h2>Contas existentes</h2>
+ <div class="table-scroll"><table>
+  <thead><tr><th>Utilizador</th><th>Nome</th><th>Gestão</th></tr></thead>
+  <tbody>{% for helper in helpers %}
+   <tr><td>{{ helper.username }}</td><td>{{ helper.display_name }}</td><td><a class="button danger" href="/admin/helpers/{{ helper.id }}/delete">Apagar conta</a></td></tr>
+   {% else %}<tr><td colspan="3">Ainda não existem contas individuais de voluntário.</td></tr>{% endfor %}
+  </tbody>
+ </table></div>
+</section>
+<section>
+ <h2>PIN partilhado: {{ 'ativo' if shared_pin else 'desativado' }}</h2>
+ <p>Enquanto estiver ativo, quem souber o PIN pode entrar sem conta individual. Para controlar os acessos e impedir que uma pessoa apagada volte a entrar pelo PIN, mantém-no desativado. Desativar termina também as sessões abertas com o PIN; as contas individuais e a conta admin continuam a funcionar.</p>
+ <form action="/admin/helpers/shared-pin" method="post">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <input type="hidden" name="enabled" value="{{ '0' if shared_pin else '1' }}">
+  <button class="secondary">{{ 'Desativar' if shared_pin else 'Ativar' }} PIN partilhado</button>
+ </form>
+</section>
+{% endblock %}

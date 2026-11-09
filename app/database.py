@@ -4,6 +4,12 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 SCHEMA = '''
+CREATE TABLE IF NOT EXISTS helpers (
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ username TEXT NOT NULL UNIQUE COLLATE NOCASE,
+ display_name TEXT NOT NULL, password_hash TEXT NOT NULL,
+ created TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')));
+CREATE TABLE IF NOT EXISTS app_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS participants (
  id INTEGER PRIMARY KEY, nickname TEXT NOT NULL, name_key TEXT NOT NULL UNIQUE,
  created TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')));

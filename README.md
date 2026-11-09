@@ -106,7 +106,13 @@ No Mac: `http://localhost:8080`. O script mostra o IPv4 que os voluntários abre
 
 A conta administrativa existente e a palavra-passe foram preservadas. `.local.json` guarda `admin_username`, `admin_hash` e o PIN dos voluntários; está ignorado pelo Git e com permissões 600. Alternativas por ambiente: `GLUA_ADMIN_PIN`, `GLUA_VOLUNTEER_PIN`, `GLUA_SECRET`. Usa uma rede de confiança; o serviço HTTP não cifra as credenciais. Não expor a porta na Internet.
 
-1. Entra com o teu nome/PIN ou conta admin e escolhe a prova.
+Em **Administração → Gerir contas dos voluntários**, cria uma conta para cada colaborador com utilizador, nome e palavra-passe inicial (8–128 caracteres). Partilha as credenciais diretamente; só o hash da palavra-passe é guardado. Estas contas podem registar participantes e tentativas, mas não administrar a aplicação.
+
+Para retirar acesso, usa **Apagar conta**, indica o motivo e escreve `APAGAR utilizador`. As sessões dessa conta perdem acesso no próximo pedido. Participantes, tentativas, cronómetros e resultados são preservados; outro voluntário ou o admin pode concluir um cronómetro em curso. As ações ficam na auditoria. A reposição dos dados do torneio não apaga as contas.
+
+Ao criar uma conta, a opção recomendada é **desativar o PIN partilhado**, terminando também os acessos antigos por PIN. Podes gerir essa opção na mesma página. Enquanto o PIN estiver ativo, quem o souber pode entrar sem conta individual, mesmo que uma conta tenha sido apagada. A conta admin mantém-se independente e não pode ser apagada nessa página.
+
+1. Entra com a tua conta individual (ou PIN, se estiver ativo) e escolhe a prova.
 2. Procura a alcunha antes de registar outra; pessoas diferentes devem usar alcunhas distintas.
 3. Plataformas/combate: **Iniciar → Parar → Confirmar e guardar**. Corridas: tempo do jogo em `MM:SS.CC` → guardar.
 4. Falhas/abandonos contam; cada pessoa tem três tentativas por prova. Cronómetros parados ocupam a estação até confirmação. Refresh recupera o estado; reiniciar o servidor com um cronómetro a decorrer marca-o como falhado, com auditoria.
